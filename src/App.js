@@ -1,23 +1,27 @@
-import logo from './logo.svg';
 import './App.css';
 
+const { REACT_APP_API_URL } = process.env;
+
 function App() {
+  const handleStart = async () => {
+    try {
+      const url = REACT_APP_API_URL + '/room/new'
+      console.log(process.env)
+      const startResponse = await fetch(url, {
+        method: 'POST',
+      })
+      const startJson = await startResponse.json()
+      console.log(startJson)
+    } catch (err) {
+      console.log(err)
+    }
+  }
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <h1>Drawgestions</h1>
+      <button onClick={ handleStart }>Start New Game</button>
+      <button>Join Game</button>
     </div>
   );
 }
