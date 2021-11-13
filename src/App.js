@@ -1,5 +1,6 @@
 import './App.css';
 import { useState } from 'react'
+import Room from './components/Room'
 
 const { REACT_APP_API_URL } = process.env;
 
@@ -39,7 +40,7 @@ function App() {
       {
         room
         ?
-        <p>You are in room { room }</p>
+        <Room room={ room } />
         :
         <>
           <button onClick={ handleStart }>Start New Game</button>
