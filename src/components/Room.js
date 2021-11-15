@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import Game from './Game'
 const { REACT_APP_API_URL } = process.env
 
 export default function Room(props) {
@@ -31,9 +32,10 @@ export default function Room(props) {
             {
                 displayName
                 ?
-                <>
-                    <p>Now in room { props.room } as { displayName }</p>
-                </>
+                <Game
+                    room={ props.room }
+                    displayName={ displayName }
+                />
                 :
                 <>
                     <p>Now joining room { props.room }</p>
