@@ -27,6 +27,15 @@ export default function Room(props) {
         }
     }
 
+    const listPlayers = props.players.map((player, i) => {
+        return (
+            <li key={i}>
+                { player }
+            </li>
+        )
+    })
+
+
     return (
         <>
             {
@@ -47,6 +56,16 @@ export default function Room(props) {
                         onChange={ e => setDesiredDisplayName(e.target.value) }
                     />
                     <button onClick={ handleJoin }>Join</button>
+                    {
+                        props.players.length > 0
+                        &&
+                        <div>
+                            <h3>Current Players</h3>
+                            <ul>
+                                { listPlayers }
+                            </ul>
+                        </div>
+                    }
                 </>
             }
         </>

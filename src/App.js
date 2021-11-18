@@ -7,6 +7,7 @@ const { REACT_APP_API_URL } = process.env;
 function App() {
   const [room, setRoom] = useState('')
   const [accessCode, setAccessCode] = useState('')
+  const [players, setPlayers] = useState([])
 
   const handleStart = async () => {
     try {
@@ -27,6 +28,7 @@ function App() {
       const joinResponse = await fetch(url)
       if (joinResponse.status === 200) {
         const joinJson = await joinResponse.json()
+        setPlayers(joinJson.users)
         setRoom(joinJson.accessCode)
       }
     } catch (err) {
@@ -40,7 +42,10 @@ function App() {
       {
         room
         ?
-        <Room room={ room } />
+        <Room 
+          room={ room }
+          players={ players } 
+        />
         :
         <>
           <button onClick={ handleStart }>Start New Game</button>
