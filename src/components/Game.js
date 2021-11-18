@@ -5,6 +5,7 @@ const { REACT_APP_API_URL } = process.env
 export default function Game(props) {
     const [incomingMessage, setIncomingMessage] = useState('')
     const [outgoingMessage, setOutgoingMessage] = useState('')
+    const [open, setOpen] = useState(true)
     const socket = useRef(null)
 
     useEffect(() => {
@@ -19,6 +20,10 @@ export default function Game(props) {
     const handleSubmit = () => {
         socket.current.emit('message', outgoingMessage, props.room)
         setOutgoingMessage('')
+    }
+
+    const handleStart = () => {
+        socket.current.emit('start', props.room)
     }
 
     const listPlayers = props.players.map((player, i) => {
@@ -39,6 +44,7 @@ export default function Game(props) {
                 onChange={ e => setOutgoingMessage(e.target.value)}
             />
             <button onClick={ handleSubmit }>Send</button>
+            <button onClick={ handleStart }>Start Game</button>
             <div>
                 <h3>Current Players</h3>
                 <ul>
