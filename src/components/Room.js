@@ -21,6 +21,7 @@ export default function Room(props) {
                 },
             })
             const joinJson = await joinResponse.json()
+            props.setPlayers(joinJson.users)
             setDisplayName(joinJson.displayName)
         } catch (err) {
             console.log(err)
@@ -44,6 +45,7 @@ export default function Room(props) {
                 <Game
                     room={ props.room }
                     displayName={ displayName }
+                    players={ props.players }
                 />
                 :
                 <>

@@ -21,6 +21,14 @@ export default function Game(props) {
         setOutgoingMessage('')
     }
 
+    const listPlayers = props.players.map((player, i) => {
+        return(
+            <li key={ i }>
+                { player }
+            </li>
+        )
+    })
+
     return (
         <>
             <p>Now in room { props.room } as { props.displayName }</p>
@@ -31,6 +39,14 @@ export default function Game(props) {
                 onChange={ e => setOutgoingMessage(e.target.value)}
             />
             <button onClick={ handleSubmit }>Send</button>
+            <div>
+                <h3>Current Players</h3>
+                <ul>
+                    {
+                        listPlayers
+                    }
+                </ul>
+            </div>
         </>
     ) 
 }

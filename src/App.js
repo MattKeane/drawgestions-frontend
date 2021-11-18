@@ -45,6 +45,7 @@ function App() {
         <Room 
           room={ room }
           players={ players } 
+          setPlayers={ setPlayers }
         />
         :
         <>
