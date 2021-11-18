@@ -5,6 +5,7 @@ const { REACT_APP_API_URL } = process.env
 export default function Room(props) {
     const [desiredDisplayName, setDesiredDisplayName] = useState('')
     const [displayName, setDisplayName] = useState('')
+    const [message, setMessage] = useState('')
 
     const handleJoin = async () => {
         try {
@@ -21,8 +22,12 @@ export default function Room(props) {
                 },
             })
             const joinJson = await joinResponse.json()
-            props.setPlayers(joinJson.users)
-            setDisplayName(joinJson.displayName)
+            if (joinJson.joined) {
+                props.setPlayers(joinJson.users)
+                setDisplayName(joinJson.displayName)
+            } else {
+                setMessage(joinJson.message)
+            }
         } catch (err) {
             console.log(err)
         }
@@ -50,6 +55,11 @@ export default function Room(props) {
                 :
                 <>
                     <p>Now joining room { props.room }</p>
+                    {
+                        message
+                        &&
+                        <p>{ message }</p>
+                    }
                     <label htmlFor="displayName">Choose a display name:</label>
                     <input 
                         type="text" 
