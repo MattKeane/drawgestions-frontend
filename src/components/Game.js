@@ -15,6 +15,7 @@ export default function Game(props) {
         socket.current.on('message', message => {
             setIncomingMessage(message)
         })
+        socket.current.on('start', () => setOpen(false))
     }, [props.room])
 
     const handleSubmit = () => {
@@ -44,7 +45,11 @@ export default function Game(props) {
                 onChange={ e => setOutgoingMessage(e.target.value)}
             />
             <button onClick={ handleSubmit }>Send</button>
-            <button onClick={ handleStart }>Start Game</button>
+            {
+                open
+                &&
+                <button onClick={ handleStart }>Start Game</button>
+            }
             <div>
                 <h3>Current Players</h3>
                 <ul>
