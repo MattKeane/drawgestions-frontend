@@ -51,6 +51,7 @@ export default function Room(props) {
                     room={ props.room }
                     displayName={ displayName }
                     players={ props.players }
+                    setPlayers={ props.setPlayers }
                 />
                 :
                 <>

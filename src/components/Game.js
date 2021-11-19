@@ -11,12 +11,16 @@ export default function Game(props) {
     useEffect(() => {
         socket.current = io(REACT_APP_API_URL)
         socket.current.emit('join', props.room)
-        console.log(props.room)
         socket.current.on('message', message => {
             setIncomingMessage(message)
         })
         socket.current.on('start', () => setOpen(false))
-    }, [props.room])
+        socket.current.on('newPlayer', newPlayer => {
+            const copyPlayers = [...props.players]
+            copyPlayers.push(newPlayer)
+            props.setPlayers(copyPlayers)
+        })
+    }, [props])
 
     const handleSubmit = () => {
         socket.current.emit('message', outgoingMessage, props.room)
