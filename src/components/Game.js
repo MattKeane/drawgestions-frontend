@@ -1,34 +1,22 @@
-import { useState, useEffect, useRef } from 'react'
-import { io } from 'socket.io-client'
-const { REACT_APP_API_URL } = process.env
+import { useState, useEffect } from 'react'
 
 export default function Game(props) {
     const [incomingMessage, setIncomingMessage] = useState('')
     const [outgoingMessage, setOutgoingMessage] = useState('')
-    const [open, setOpen] = useState(true)
-    const socket = useRef(null)
 
     useEffect(() => {
-        socket.current = io(REACT_APP_API_URL)
-        socket.current.emit('join', props.room)
-        socket.current.on('message', message => {
+        props.socket.on('message', message => {
             setIncomingMessage(message)
-        })
-        socket.current.on('start', () => setOpen(false))
-        socket.current.on('newPlayer', newPlayer => {
-            const copyPlayers = [...props.players]
-            copyPlayers.push(newPlayer)
-            props.setPlayers(copyPlayers)
         })
     }, [props])
 
     const handleSubmit = () => {
-        socket.current.emit('message', outgoingMessage, props.room)
+        props.socket.emit('message', outgoingMessage, props.room)
         setOutgoingMessage('')
     }
 
     const handleStart = () => {
-        socket.current.emit('start', props.room)
+        props.socket.current.emit('start', props.room)
     }
 
     const listPlayers = props.players.map((player, i) => {
@@ -50,7 +38,7 @@ export default function Game(props) {
             />
             <button onClick={ handleSubmit }>Send</button>
             {
-                open
+                props.open
                 &&
                 <button onClick={ handleStart }>Start Game</button>
             }
