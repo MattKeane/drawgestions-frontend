@@ -28,6 +28,7 @@ export default function Room(props) {
             const payload = JSON.stringify({
                 accessCode: props.room,
                 displayName: desiredDisplayName,
+                socket: socket.current.id,
             })
             const joinResponse = await fetch(url, {
                 method: 'POST',
