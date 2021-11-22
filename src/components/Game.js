@@ -9,7 +9,7 @@ export default function Game(props) {
         props.socket.on('message', message => {
             setIncomingMessage(message)
         })
-    }, [props])
+    }, [props.socket])
 
     const handleSubmit = () => {
         props.socket.emit('message', outgoingMessage, props.room)
@@ -53,7 +53,7 @@ export default function Game(props) {
                     </div>
                 </>
                 :
-                <Suggestions />
+                <Suggestions socket={ props.socket } />
             }
         </>
     ) 

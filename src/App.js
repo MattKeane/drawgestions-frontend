@@ -1,5 +1,6 @@
 import './App.css';
-import { useState } from 'react'
+import { useState, useRef, useEffect } from 'react'
+import { io } from 'socket.io-client'
 import Room from './components/Room'
 
 const { REACT_APP_API_URL } = process.env;
@@ -8,6 +9,19 @@ function App() {
   const [room, setRoom] = useState('')
   const [accessCode, setAccessCode] = useState('')
   const [players, setPlayers] = useState([])
+  const socket = useRef(null)
+
+  useEffect(() => {
+    socket.current = io(REACT_APP_API_URL)
+  }, [])
+
+  useEffect(() => {
+        socket.current.on('newPlayer', newPlayer => {
+        const copyPlayers = [...players]
+        copyPlayers.push(newPlayer)
+        setPlayers(copyPlayers)
+      })
+  }, [players])
 
   const handleStart = async () => {
     try {
@@ -17,6 +31,7 @@ function App() {
       })
       const startJson = await startResponse.json()
       setRoom(startJson.accessCode)
+      socket.current.emit('join', startJson.accessCode)
     } catch (err) {
       console.log(err)
     }
@@ -30,6 +45,7 @@ function App() {
         const joinJson = await joinResponse.json()
         setPlayers(joinJson.users)
         setRoom(joinJson.accessCode)
+        socket.current.emit('join', joinJson.accessCode)
       }
     } catch (err) {
       console.log(err)
@@ -46,6 +62,7 @@ function App() {
           room={ room }
           players={ players } 
           setPlayers={ setPlayers }
+          socket={ socket.current }
         />
         :
         <>

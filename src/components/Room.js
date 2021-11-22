@@ -1,6 +1,5 @@
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect } from 'react'
 import Game from './Game'
-import { io } from 'socket.io-client'
 
 const { REACT_APP_API_URL } = process.env
 
@@ -9,18 +8,10 @@ export default function Room(props) {
     const [displayName, setDisplayName] = useState('')
     const [message, setMessage] = useState('')
     const [open, setOpen] = useState(true)
-    const socket = useRef(null)
 
     useEffect(() => {
-        socket.current = io(REACT_APP_API_URL)
-        socket.current.emit('join', props.room)
-        socket.current.on('start', () => setOpen(false))
-        socket.current.on('newPlayer', newPlayer => {
-            const copyPlayers = [...props.players]
-            copyPlayers.push(newPlayer)
-            props.setPlayers(copyPlayers)
-        })
-    }, [props])
+        props.socket.on('start', () => setOpen(false))
+    }, [props.socket])
 
     const handleJoin = async () => {
         try {
@@ -28,7 +19,7 @@ export default function Room(props) {
             const payload = JSON.stringify({
                 accessCode: props.room,
                 displayName: desiredDisplayName,
-                socket: socket.current.id,
+                socket: props.socket.id,
             })
             const joinResponse = await fetch(url, {
                 method: 'POST',
@@ -66,7 +57,7 @@ export default function Room(props) {
                 <Game
                     room={ props.room }
                     displayName={ displayName }
-                    socket={ socket.current }
+                    socket={ props.socket }
                     players={ props.players }
                     open={ open }
                 />
