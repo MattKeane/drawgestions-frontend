@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import Suggestions from './Suggestions'
+import Play from './Play'
 
 export default function Game(props) {
     const [incomingMessage, setIncomingMessage] = useState('')
@@ -53,7 +53,7 @@ export default function Game(props) {
                     </div>
                 </>
                 :
-                <Suggestions socket={ props.socket } />
+                <Play socket={ props.socket } />
             }
         </>
     ) 
