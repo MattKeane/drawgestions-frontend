@@ -39,7 +39,7 @@ export default function Game(props) {
                     <input
                         type="text"
                         value={ outgoingMessage }
-                        onChange={ e => setOutgoingMessage(e.target.value)}
+                        onChange={ e => setOutgoingMessage(e.target.value) }
                     />
                     <button onClick={ handleSubmit }>Send</button>
                     <button onClick={ handleStart }>Start Game</button>            
